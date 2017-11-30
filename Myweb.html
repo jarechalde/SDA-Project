@@ -23,6 +23,15 @@ var map = new mapboxgl.Map({
     zoom: 3
 });
 
+function init() {
+    map.addSource('mydata',{
+        type: 'geojson',
+        data: '',
+        buffer: 0,
+        maxzoom: 12
+    })
+};
+
 map.on('load', function () {
 
     map.addLayer({
