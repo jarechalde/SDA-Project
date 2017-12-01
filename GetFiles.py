@@ -40,7 +40,7 @@ urllib.urlretrieve(dataurls[0],"myfile.zip")
 #We can add a progressbar later
 
 for url in dataurls:
- print(url)
+ #print(url)
  names = url.split("/")
  filename = names[4]
  year = filename[0:4]
@@ -59,7 +59,7 @@ for url in dataurls:
   os.makedirs("Files/"+year+"/"+month)
 
  if not os.path.exists('Files/'+year+"/"+month+"/"+day):
-  os.makedirs("Files/"+year+"/"+"month"+"/"+day)
+  os.makedirs("Files/"+year+"/"+month+"/"+day)
  
  #Downloading file in the corresponding directory
  urllib.urlretrieve(url,"Files/"+year+"/"+month+"/"+day+"/"+filename)
