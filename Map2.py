@@ -62,7 +62,7 @@ for i in range(1,nrows):
 
  #If there are no locations in this row, we are not interested into this row, so we skip it:
  if loc==None:
-  print("NO LOCATION DATA")
+  #print("NO LOCATION DATA")
   continue
 
  #If there are locations in this row, we continue saving the place
@@ -86,11 +86,11 @@ for i in range(1,nrows):
   try:
    latlongemot = (float(lat),float(long),float(emotion))
   except:
-   print("ERROR: MISSING DATA")
-   print(lat,long,emotion)
+   #print("ERROR: MISSING DATA")
+   #print(lat,long,emotion)
    continue
 
-  #print(latlongemot)
+  print("%f\t%f\t%f" % (latlongemot[0],latlongemot[1],latlongemot[2]))
 
   #If everything went right, we append it to our list 
-  listlatlongem.append(latlongemot)
+  #listlatlongem.append(latlongemot)
