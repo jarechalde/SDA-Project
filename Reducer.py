@@ -1,10 +1,12 @@
+#!/usr/bin/env python
+
 from operator import itemgetter
 import sys
 
 current_lat = None
 current_long = None
 current_emotion = 0
-lat,long = none
+lat,long = None
 
 #Input comes from STDIN
 for line in sys.stdin:
@@ -15,7 +17,7 @@ for line in sys.stdin:
  lat,long,emot = line.split('\t')
 
  #This section of the code works because Hadoop sorts map output
- if current_lat==lat and current_long=long:
+ if current_lat==lat and current_long==long:
   current_emotion+=emot
  else:
   if current_lat and current_long:
