@@ -35,8 +35,6 @@ gkgurls.close()
 dataurls = open("gkgfiles.txt","r")
 dataurls = dataurls.readlines()
 
-print(dataurls[0])
-urllib.urlretrieve(dataurls[0],"myfile.zip")
 #We can add a progressbar later
 
 for url in dataurls:
@@ -45,9 +43,9 @@ for url in dataurls:
  year = filename[0:4]
  month = filename[4:6]
  day = filename[6:8]
- print(year,month,day)
+ #print(year,month,day)
 
- print(filename)
+ #print(filename)
   
  #Creating the file directories
  if not os.path.exists('Files'):
@@ -66,7 +64,7 @@ for url in dataurls:
  urllib.urlretrieve(url,"Files/"+year+"/"+month+"/"+day+"/"+filename)
 
  #Unzipping the file
- os.system("unzip "+"'Files/"+year+"/"+month+"/"+day+"/"+filename+"'")
+ os.system("unzip "+"'Files/"+year+"/"+month+"/"+day+"/"+filename+"'"+" -d"+" Files/"+year+"/"+month+"/"+day+"/")
 
  #Deleting the zip file
  os.system("rm "+"'Files/"+year+"/"+month+"/"+day+"/"+filename+"'")
