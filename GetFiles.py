@@ -1,5 +1,6 @@
 import urllib2
 import urllib
+import os
 
 files  = urllib2.urlopen('http://data.gdeltproject.org/gdeltv2/masterfilelist.txt')
 web = files.read()
@@ -37,3 +38,29 @@ dataurls = dataurls.readlines()
 print(dataurls[0])
 urllib.urlretrieve(dataurls[0],"myfile.zip")
 #We can add a progressbar later
+
+for url in dataurls:
+ print(url)
+ names = url.split("/")
+ filename = names[4]
+ year = filename[0:4]
+ month = filename[4:6]
+ day = filename[6:8]
+ print(year,month,day)
+  
+ #Creating the file directories
+ if not os.path.exists('Files'):
+  os.makedirs('Files')
+
+ if not os.path.exists('Files/' + year):
+  os.makedirs('Files/' +  year)
+
+ if not os.path.exists('Files/'+year+"/"+month):
+  os.makedirs("Files/"+year+"/"+month)
+
+ if not os.path.exists('Files/'+year+"/"+month+"/"+day):
+  os.makedirs("Files/"+year+"/"+"month"+"/"+day)
+ 
+ #Downloading file in the corresponding directory
+ urllib.urlretrieve(url,"Files/"+year+"/"+month+"/"+day+"/"+filename)
+
