@@ -46,7 +46,13 @@ for url in dataurls:
  #print(year,month,day)
 
  #print(filename)
-  
+ 
+ #Due to size limitations in Googles instances we will only use 2016 and 2017 data
+ yearlist = ["2016","2017"]
+ if year not in yearlist:
+  print("Passing")
+  continue  	
+ 
  #Creating the file directories
  if not os.path.exists('Files'):
   os.makedirs('Files')
