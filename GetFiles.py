@@ -1,4 +1,5 @@
 import urllib2
+import urllib
 
 files  = urllib2.urlopen('http://data.gdeltproject.org/gdeltv2/masterfilelist.txt')
 web = files.read()
@@ -34,8 +35,5 @@ dataurls = open("gkgfiles.txt","r")
 dataurls = dataurls.readlines()
 
 print(dataurls[0])
-data= urllib2.open(dataurls[0])
-f = open("myfile.zip","wb")
-f.write(data)
-f.close()
-
+urllib.urlretrieve(dataurls[0],"myfile.zip")
+#We can add a progressbar later
