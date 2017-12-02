@@ -77,7 +77,10 @@ for i in range(1,nrows):
 
     #Emotion tone indicators are separated by a comma
     emotions = emot.split(',')
-    latlist = []
+    emotlist = []
+
+
+    latlistem = []
 
     #Person names are separated by semicolon
 
@@ -102,18 +105,20 @@ for i in range(1,nrows):
         long = locatt[6]
         #If we cannot convert to float we skip to the next loop execution
         try:
-            latlong = (float(lat),float(long))
+            latlongem = (float(lat),float(long),emotions[0])
         except:
             continue
-        latlist.append(latlong,emotions[0])
+        latlistem.append(latlongem)
 
     #We should save in the third part of the list the number of times same location appeared to set a circle size in the map
 
     #Adding the locartion
-    loclists.append(latlist)
+    loclists.append(latlistem)
 
     #We add the emotion of this event to the emotions array
     emotlist.append(emotions[0])
 
     #Add the persons of this event to the persons array
     allpersons.append(perslist)
+
+print(loclists)

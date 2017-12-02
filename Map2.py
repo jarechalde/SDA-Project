@@ -90,7 +90,7 @@ for i in range(1,nrows):
    #print(lat,long,emotion)
    continue
 
-  print("%f\t%f\t%f" % (latlongemot[0],latlongemot[1],latlongemot[2]))
+  #print("%f\t%f\t%f" % (latlongemot[0],latlongemot[1],latlongemot[2]))
 
   #If everything went right, we append it to our list 
-  #listlatlongem.append(latlongemot)
+  listlatlongem.append(latlongemot)
