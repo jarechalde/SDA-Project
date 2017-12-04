@@ -30,9 +30,22 @@ And repeat
 until finished
 ```
 
+After installing Hadoop in the machine, we need to add it to the path, in order to do this we will need to edit the ~/.bashrc file. After that, we will be ready to start transferring files to the Hadoop file system in order to start working with hadoop.
+```
+export PATH=$PATH:usr/local/hadoop/bin
+```
+
+
 End with an example of getting some data out of the system or using it for a little demo
 
 ## Running the tests
+
+After creating the Python Mapper and Reducer functions, we ran some tests to see if they were behaving properly. For this tests, we didn't use hdfs.
+
+```
+find . -name \*2016010112*\ -print | /home/jarechalde/Project/SDA-PROJECT/Map3.py | sort -k1,1 -k2,1 | /home/jarechalde/Project/SDA-Project/Reducer.py
+```
+This test, sends the mapper file a list of CSV files, the mapper takes this files and extracts all the coordinates found in this file, after that we sort the coordinates in ascending order, first the longitude and then the latitude. In the end, we send this list to the reducer function, which takes this list as an input and reduces them, counting the number of times each location appeared, and calculating the average of the sentiments for each unique location.
 
 Explain how to run the automated tests for this system
 
