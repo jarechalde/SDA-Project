@@ -40,6 +40,8 @@ End with an example of getting some data out of the system or using it for a lit
 
 ## Running the tests
 
+###1. First Map-Reducer 
+
 After creating the Python Mapper and Reducer functions, we ran some tests to see if they were behaving properly. For this tests, we didn't use hdfs.
 
 ```
@@ -49,13 +51,42 @@ This test, sends the mapper file a list of CSV files, the mapper takes this file
 
 Explain how to run the automated tests for this system
 
-### Break down into end to end tests
+###2. Testing the map reducer on Hadoop
 
-Explain what these tests test and why
+Now we will test Map Reduce on Hadoop, for that we will first need to transfer our data files to hadoop file system. We will test this first copying only one days data.
 
 ```
-Give an example
+hdfs dfs -copyFromLocal ~/Path-to-local-Files/Files/2016/01/01 ~/Path-to-some-other-folder/
 ```
+
+To check if the files were copied successfully we run this command.
+
+```
+hdfs dfs -ls
+```
+
+We have to find the hadoop streaming jar next, which maybe located in different folders depending on the hadoop version. To find it we run this command.
+
+```
+sudo find / -name "hadiio-streaming*.jar"
+```
+
+In my case the file was located in this folder.
+
+```
+/usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.9.0.jar
+```
+
+Then we execute this command for the map-reduce
+
+```
+hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.9.0.jar -file /home/jarechalde/Project/SDA-Project/Map3.py -mapper /home/jarechalde/Project/SDA-Project/Map3.py -file /home/jarecha
+lde/Project/SDA-Project/Reducer.py -reducer /home/jarechalde/Project/SDA-Project/Reducer.py -input /home/jarechalde/Hadoop/01/* -output /home/jarechalde/Hadoop/hadoop-output
+le /home/jarechalde/Project/SDA-Project/Reducer.py -reducer /home/jarechalde/Project/SDA-Project/Reducer.py -input 
+```
+
+
+And the files should be showing there.
 
 ### And coding style tests
 
