@@ -9,11 +9,11 @@ import sys
 #os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages com.databricks:spark-xml:0.4.1 pyspark-shell'
 
 #Initializing the spark context
-sc = pyspark.SparkContext.getOrCreate()
+#sc = pyspark.SparkContext.getOrCreate()
 #sc.setLogLevel("OFF")
 
 #Initialize the SQL context
-sql = pyspark.SQLContext(sc)
+#sql = pyspark.SQLContext(sc)
 
 for line in sys.stdin:
 
@@ -43,8 +43,6 @@ for line in sys.stdin:
  #Emotions are separated by a simple comma
  emotions = emot.split(",")
  emotion = emotions[0]
-
- print(locations[0])
 
  #Now for every location in locations we will save it
  #Locatioon 0 was empty for some reason so we start in 1 instead

@@ -2,6 +2,7 @@
 
 from operator import itemgetter
 import sys
+import os,logging
 
 current_lat = None
 current_long = None
@@ -10,11 +11,19 @@ lat = None
 long = None
 current_count = 1
 
+logging.basicConfig(filename="Reducer.log",level=logging.INFO)
+
+logging.info("Reducer started")
+
 #Input comes from STDIN
 for line in sys.stdin:
 
+ v = 10
+
+ logging.info(v) 
+
  #Let's see what kinda input are we getting
- print(line)
+ logging.info(line)
 
  #Removing whitespace
  #line = line.strip()
