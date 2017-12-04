@@ -12,7 +12,7 @@ print(len(mydata))
 #m = Basemap(llcrnrlon=-10.5,llcrnrlat=49.5,urcrnrlon=3.5,urcrnrlat=59.5,
 #            resolution='i',projection='cass',lon_0=-4.36,lat_0=54.7)
 
-m = Basemap()
+m = Basemap(resolution='f')
 
 #m.drawcoastlines()
 m.fillcontinents(color='coral',lake_color='aqua')
