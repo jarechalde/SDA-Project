@@ -13,8 +13,11 @@ current_count = 1
 #Input comes from STDIN
 for line in sys.stdin:
 
+ #Let's see what kinda input are we getting
+ print(line)
+
  #Removing whitespace
- line = line.strip()
+ #line = line.strip()
 
  lat,long,emot = line.split('\t')
 
