@@ -18,16 +18,6 @@ logging.info("Reducer started")
 #Input comes from STDIN
 for line in sys.stdin:
 
- v = 10
-
- logging.info(v) 
-
- #Let's see what kinda input are we getting
- logging.info(line)
-
- #Removing whitespace
- #line = line.strip()
-
  lat,long,emot = line.split('\t')
 
  #Converting to numbers

@@ -34,7 +34,7 @@ for line in sys.stdin:
 
  #If there are no locations in this row, we are not interested into this row, so we skip it:
  if loc==None:
-  #print("NO LOCATION DATA")
+  logging.info("NO LOCATION DATA")
   continue
 
  #If there are locations in this row, we continue saving the place
@@ -65,5 +65,5 @@ for line in sys.stdin:
    logging.error("ERROR: MISSING DATA")
    #print(lat,long,emotion)
    continue
-  logging.info(latlongemot)
+
   print("%f\t%f\t%f" % (latlongemot[0],latlongemot[1],latlongemot[2]))
