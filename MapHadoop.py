@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 
 import pyspark
-import os
+import os,logging
 from pyspark.sql.functions import *
 import sys
+
+logging.basicConfig(filename="Mapper.log", level=logging.INFO)
 
 #Loading the packages befores creating the context
 #os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages com.databricks:spark-xml:0.4.1 pyspark-shell'
@@ -60,8 +62,8 @@ for line in sys.stdin:
   try:
    latlongemot = (float(lat),float(long),float(emotion))
   except:
-   #print("ERROR: MISSING DATA")
+   logging.error("ERROR: MISSING DATA")
    #print(lat,long,emotion)
    continue
-
+  logging.info(latlongemot)
   print("%f\t%f\t%f" % (latlongemot[0],latlongemot[1],latlongemot[2]))

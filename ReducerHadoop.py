@@ -51,8 +51,11 @@ for line in sys.stdin:
    #Writing the results to STDOUT
    #Calculating the mean first
    current_emot = current_emot/current_count
-   print("%f\t%f\t%f\t%i" % (current_lat,current_long,current_emot,current_count))
- 
+   try:
+    print("%f\t%f\t%f\t%i" % (current_lat,current_long,current_emot,current_count))
+   except:
+    logging.info("Error Formatting string")  
+
   #Updating the values  
   current_lat = lat
   current_long = long
@@ -61,4 +64,7 @@ for line in sys.stdin:
 
 #Printing the last coordinates
 if current_lat==lat and current_long==long:
- print("%f\t%f\t%f" % (current_lat,current_long,current_emot,current_count))
+ try:
+  print("%f\t%f\t%f" % (current_lat,current_long,current_emot,current_count))
+ except:
+  logging.info("Really an error here?")
