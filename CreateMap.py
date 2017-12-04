@@ -12,7 +12,7 @@ print(len(mydata))
 #m = Basemap(llcrnrlon=-10.5,llcrnrlat=49.5,urcrnrlon=3.5,urcrnrlat=59.5,
 #            resolution='i',projection='cass',lon_0=-4.36,lat_0=54.7)
 
-m = Basemap(resolution='i')
+m = Basemap(resolution='f')
 
 #m.drawcoastlines()
 m.fillcontinents(color='coral',lake_color='aqua')
@@ -22,12 +22,12 @@ m.fillcontinents(color='coral',lake_color='aqua')
 #m.drawmeridians(np.arange(-20.,21.,2.))
 m.drawmapboundary(fill_color='aqua')
 
-for i in range(0,100):
+for i in range(0,1000):
+ print(i)
  data = mydata[i]
  data = data.split("\t")
  lon = data[0]
  lat = data[1]
- print(lon)
  x,y = m(lon,lat)
  m.plot(x,y,'bo', ms = 0.1)
 
