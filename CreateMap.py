@@ -14,7 +14,7 @@ print(len(mydata))
 
 m = Basemap()
 
-m.drawcoastlines()
+#m.drawcoastlines()
 m.fillcontinents(color='coral',lake_color='aqua')
 
 # draw parallels and meridians.
@@ -29,7 +29,7 @@ for i in range(0,100):
  lat = data[1]
  print(lon)
  x,y = m(lon,lat)
- m.plot(x,y,'bo',markersize=1)
+ m.plot(x,y,'bo', ms = 10)
 
 plt.title("Cassini Projection")
 plt.savefig("Mymap.jpg")
