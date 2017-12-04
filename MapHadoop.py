@@ -62,7 +62,7 @@ for line in sys.stdin:
   try:
    latlongemot = (float(lat),float(long),float(emotion))
   except:
-   logging.error("ERROR: MISSING DATA")
+   logging.error("MISSING DATA")
    #print(lat,long,emotion)
    continue
 
