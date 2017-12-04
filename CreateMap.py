@@ -29,7 +29,7 @@ for i in range(0,100):
  lat = data[1]
  print(lon)
  x,y = m(lon,lat)
- m.plot(x,y,'bo', ms = 0.001)
+ m.plot(x,y,'bo', ms = 0.1)
 
 plt.title("Cassini Projection")
 plt.savefig("Mymap.jpg")
