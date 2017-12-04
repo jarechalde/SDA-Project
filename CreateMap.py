@@ -4,22 +4,32 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-# llcrnrlat,llcrnrlon,urcrnrlat,urcrnrlon
-# are the lat/lon values of the lower left and upper right corners
-# of the map.
-# resolution = 'i' means use intermediate resolution coastlines.
-# lon_0, lat_0 are the central longitude and latitude of the projection.
-m = Basemap(llcrnrlon=-10.5,llcrnrlat=49.5,urcrnrlon=3.5,urcrnrlat=59.5,
-            resolution='i',projection='cass',lon_0=-4.36,lat_0=54.7)
-# can get the identical map this way (by specifying width and
-# height instead of lat/lon corners)
-#m = Basemap(width=891185,height=1115557,\
+mydata = open("part-00000","r")
+mydata = mydata.readlines()
+
+print(len(mydata))
+
+#m = Basemap(llcrnrlon=-10.5,llcrnrlat=49.5,urcrnrlon=3.5,urcrnrlat=59.5,
 #            resolution='i',projection='cass',lon_0=-4.36,lat_0=54.7)
+
+m = Basemap()
+
 m.drawcoastlines()
 m.fillcontinents(color='coral',lake_color='aqua')
+
 # draw parallels and meridians.
 m.drawparallels(np.arange(-40,61.,2.))
 m.drawmeridians(np.arange(-20.,21.,2.))
 m.drawmapboundary(fill_color='aqua')
+
+for i in range(0,100):
+ data = mydata[i]
+ data = data.split("\t")
+ lon = data[0]
+ lat = data[1]
+ print(lon)
+ x,y = m(lon,lat)
+ m.plot(x,y,'bo',markersize=24)
+
 plt.title("Cassini Projection")
 plt.savefig("Mymap.jpg")
