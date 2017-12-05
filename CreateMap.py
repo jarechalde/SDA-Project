@@ -1,7 +1,7 @@
 from mpl_toolkits.basemap import Basemap
 import numpy as np
 import matplotlib
-matplotlib.use('Agg')
+#matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 mydata = open("part-00000","r")
