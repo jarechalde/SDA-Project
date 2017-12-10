@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import pyspark
+#import pyspark
 import os,logging
 from pyspark.sql.functions import *
 import sys
