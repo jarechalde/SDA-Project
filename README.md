@@ -4,15 +4,24 @@ This Projects objective is to use map-reduce in a hadoop cluster, for sentiment 
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+First we will start by setting up the hadoop cluster, for this we will create 4 instances, and configure them as follows.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+First we will need to install java.
 
 ```
-Give examples
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install default-jre
+sudo apt-get install default-jdk
 ```
+
+To check if Java was installed correctly we can run this command
+```
+java -version
+```
+And the java version should show up in case it was successfully installed.
 
 ### Installing
 
