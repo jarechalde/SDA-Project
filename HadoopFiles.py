@@ -38,7 +38,11 @@ dataurls = dataurls.readlines()
 #We can add a progressbar later
 
 #Starting hadoop cluster
-#os.system("/usr/local/hadoop/sbin/start-dfs.sh")
+os.system("/usr/local/hadoop/sbin/start-dfs.sh")
+os.system("/usr/local/hadoop/sbin/start-yarn.sh")
+#Leaving safe mpode
+os.system("/usr/local/hadoop/bin/hadoop dfsadmin -safemode leave")
+
 
 def getfiles():
 
@@ -100,6 +104,7 @@ def getfiles():
   fileunzip = fileunzip[0]+".gkg.csv"
  
   #Copying the file into hadoop file system
+  os.system("hdfs dfs -mkdir -p /home/hduser/Files/"+year+"/"+month+"/"+day)
   os.system("hdfs dfs -copyFromLocal "+"/usr/local/hadoop/tmp/Files/"+year+"/"+month+"/"+day+"/"+fileunzip+" /home/hduser/Files/"+year+"/"+month+"/"+day+"/"+fileunzip)
 
   #Deleting the file after copying into hadoop file system 
@@ -108,26 +113,37 @@ def getfiles():
 
 #getfiles()
 
-#Leave safe mode before running the mapreduce jib
-os.system("/usr/local/hadoop/bin/hadoop dfsadmin -safemode leave")
+def mapreducejob():
 
-command = "hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.9.0.jar "
-command += "-file /home/hduser/Work/SDA-Project/MapHadoop.py "
-command += "-mapper /home/hduser/Work/SDA-Project/MapHadoop.py "
-command += "-file /home/hduser/Work/SDA-Project/ReducerHadoop.py "
-command += "-reducer /home/hduser/Work/SDA-Project/ReducerHadoop.py " 
-command += "-input /home/hduser/Files/2016/01/01/* "
-command += "-output /home/hduser/Hadoop/hadoop-output"
+ #Leave safe mode before running the mapreduce jib
+ os.system("/usr/local/hadoop/bin/hadoop dfsadmin -safemode leave")
 
+ command = "hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.9.0.jar "
+ command += "-file /home/hduser/Work/SDA-Project/MapHadoop.py "
+ command += "-mapper /home/hduser/Work/SDA-Project/MapHadoop.py "
+ command += "-file /home/hduser/Work/SDA-Project/ReducerHadoop.py "
+ command += "-reducer /home/hduser/Work/SDA-Project/ReducerHadoop.py " 
+ command += "-input /home/hduser/Files/2016/01/01/* "
+ command += "-output /home/hduser/Hadoop/hadoop-output"
 
-#getfiles()
-os.system(command)
+ #Getting files
+ #getfiles()
 
-#Now lets copy the files from the hdfs into our local system
-os.system("hdfs dfs -get /home/hduser/Hadoop/hadoop-output/* /home/hduser/")
+ os.system(command)
 
-#Removing the results from hdfs
-os.system("hdfs dfs -rm -r /home/hduser/Hadoop/hadoop-output/")
+ #Now lets copy the files from the hdfs into our local system
+ os.system("hdfs dfs -get /home/hduser/Hadoop/hadoop-output/* /home/hduser/Results")
+
+ #Removing the results from hdfs
+ os.system("hdfs dfs -rm -r /home/hduser/Hadoop/hadoop-output/")
+
+ #Removing temporaty filed
+ os.system("sudo rm -r /app/hadoop/tmp")
+ os.system("sudo mkdir -p /app/hadoop/tmp")
+ os.system("sudo chown hduser:hadoop /app/hadoop/tmp")
+ os.system("sudo chmod 750 /app/hadoop/tmp")
+
 
 #Closing the clsuter
 #os.system("/usr/local/hadoop/sbin/stop-dfs.sh")
+#os.system("/usr/local/hadoop/sbin/stop-yarn.sh")
