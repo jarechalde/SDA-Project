@@ -11,6 +11,7 @@ lat = None
 long = None
 current_count = 1
 
+#Starting the logger
 logging.basicConfig(filename="Reducer.log",level=logging.INFO)
 
 logging.info("Reducer started")
@@ -29,8 +30,6 @@ for line in sys.stdin:
  #If we cannot convert them skip to the next iteration
  except:
   continue
-
- #print(lat,long,emot)
 
  #This section of the code works because Hadoop sorts map output
  if current_lat==lat and current_long==long:

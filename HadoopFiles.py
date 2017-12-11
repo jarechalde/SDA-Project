@@ -2,10 +2,11 @@ import urllib2
 import urllib
 import os
 
+#First we get the file that contains all the urls for the files that we are going to use in this project
 files  = urllib2.urlopen('http://data.gdeltproject.org/gdeltv2/masterfilelist.txt')
 web = files.read()
 
-#Creating a file with the urls
+#Creating a file to save the urls
 myfile = open("myfiles.txt","w")
 myfile.write(web)
 myfile.close()
@@ -22,11 +23,12 @@ for url in urlslist:
  url = url.split(" ")
  try:
   file = url[2]
+  #If the file name doesnt contain gkg, we wont save it into the gkg urls file
   if "gkg" not in file:
    continue
   gkgurls.write(file)
  except:
-  print("ERROR")
+  print("ERROR, url not found")
 
 #Closing the file of gkg urls
 gkgurls.close()
@@ -35,17 +37,17 @@ gkgurls.close()
 dataurls = open("gkgfiles.txt","r")
 dataurls = dataurls.readlines()
 
-#We can add a progressbar later
-
 #Starting hadoop cluster
 os.system("/usr/local/hadoop/sbin/start-dfs.sh")
 os.system("/usr/local/hadoop/sbin/start-yarn.sh")
-#Leaving safe mpode
+
+#Leaving safe mode
 os.system("/usr/local/hadoop/bin/hadoop dfsadmin -safemode leave")
 
-
+#Function for getting the files
 def getfiles():
-
+ 
+ #For each url in the gkg urls we will get the filename, year, month and day
  for url in dataurls:
   names = url.split("/")
   filename = names[4]
@@ -59,19 +61,17 @@ def getfiles():
   #Due to size limitations in Googles instances we will only use 2016 and 2017 data
   yearlist = ["2016"]
   if year not in yearlist:
-   #print("Passing")
    continue  	
  
   monthlist = ["01"]
   if month not in monthlist:
-   #print("Passing")
    continue
 
   daylist = ["01"]
   if day not in daylist:
-   #print("Passing")
    continue
 
+  #Removing the temporary files before downloading our files
   try:
    os.system("rm -rf /usr/local/hadoop/tmp/Files")
   except:
@@ -90,7 +90,7 @@ def getfiles():
   if not os.path.exists('/usr/local/hadoop/tmp/Files/'+year+"/"+month+"/"+day):
    os.makedirs("/usr/local/hadoop/tmp/Files/"+year+"/"+month+"/"+day)
  
-  #Downloading file in the corresponding directory
+  #Downloading each file in its corresponding directory
   urllib.urlretrieve(url,"/usr/local/hadoop/tmp/Files/"+year+"/"+month+"/"+day+"/"+filename)
 
   #Unzipping the file
@@ -107,43 +107,43 @@ def getfiles():
   os.system("hdfs dfs -mkdir -p /home/hduser/Files/"+year+"/"+month+"/"+day)
   os.system("hdfs dfs -copyFromLocal "+"/usr/local/hadoop/tmp/Files/"+year+"/"+month+"/"+day+"/"+fileunzip+" /home/hduser/Files/"+year+"/"+month+"/"+day+"/"+fileunzip)
 
-  #Deleting the file after copying into hadoop file system 
+  #Deleting the file from our local system after copying into hadoop file system 
   os.system("rm "+"'/usr/local/hadoop/tmp/Files/"+year+"/"+month+"/"+day+"/"+fileunzip+"'")
-
-
-#getfiles()
 
 def mapreducejob():
 
- #Leave safe mode before running the mapreduce jib
+ #Leave safe mode before running the mapreduce job
  os.system("/usr/local/hadoop/bin/hadoop dfsadmin -safemode leave")
 
+ #Command for running the mapreduce job
  command = "hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.9.0.jar "
  command += "-file /home/hduser/Work/SDA-Project/MapHadoop.py "
  command += "-mapper /home/hduser/Work/SDA-Project/MapHadoop.py "
  command += "-file /home/hduser/Work/SDA-Project/ReducerHadoop.py "
  command += "-reducer /home/hduser/Work/SDA-Project/ReducerHadoop.py " 
- command += "-input /home/hduser/Files/2016/01/01/* "
+ command += "-input /home/hduser/Files/2016/01/01/* " #This line will specify the input files for the mapreduce job
  command += "-output /home/hduser/Hadoop/hadoop-output"
 
- #Getting files
- #getfiles()
-
+ #Running the  mapreduce job
  os.system(command)
 
  #Now lets copy the files from the hdfs into our local system
  os.system("hdfs dfs -get /home/hduser/Hadoop/hadoop-output/* /home/hduser/Results")
 
- #Removing the results from hdfs
+ #Removing the output from hdfs
  os.system("hdfs dfs -rm -r /home/hduser/Hadoop/hadoop-output/")
 
- #Removing temporaty filed
+ #Removing temporary files
  os.system("sudo rm -r /app/hadoop/tmp")
  os.system("sudo mkdir -p /app/hadoop/tmp")
  os.system("sudo chown hduser:hadoop /app/hadoop/tmp")
  os.system("sudo chmod 750 /app/hadoop/tmp")
 
 
-#Closing the clsuter
-#os.system("/usr/local/hadoop/sbin/stop-dfs.sh")
-#os.system("/usr/local/hadoop/sbin/stop-yarn.sh")
+#We will get the files and then run the mapreduce job
+getfiles()
+mapreducejob()
+
+#Closing the cluster
+os.system("/usr/local/hadoop/sbin/stop-dfs.sh")
+os.system("/usr/local/hadoop/sbin/stop-yarn.sh")

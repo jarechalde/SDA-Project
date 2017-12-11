@@ -5,17 +5,8 @@ import os,logging
 from pyspark.sql.functions import *
 import sys
 
+#Starting the logger
 logging.basicConfig(filename="Mapper.log", level=logging.INFO)
-
-#Loading the packages befores creating the context
-#os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages com.databricks:spark-xml:0.4.1 pyspark-shell'
-
-#Initializing the spark context
-#sc = pyspark.SparkContext.getOrCreate()
-#sc.setLogLevel("OFF")
-
-#Initialize the SQL context
-#sql = pyspark.SQLContext(sc)
 
 for line in sys.stdin:
 
@@ -50,11 +41,9 @@ for line in sys.stdin:
  #Locatioon 0 was empty for some reason so we start in 1 instead
  for i in range(1,len(locations)):
   location = locations[i]
-  #print(location)  
 
   #Locations are divided by #, and the latitude and longitude are in the 5th and 6th position respectivelu
   locatt = location.split("#")
-  #print(location)
   lat = locatt[5]
   long = locatt[6]
 
@@ -63,7 +52,6 @@ for line in sys.stdin:
    latlongemot = (float(lat),float(long),float(emotion))
   except:
    logging.error("MISSING DATA")
-   #print(lat,long,emotion)
    continue
 
   print("%f\t%f\t%f" % (latlongemot[0],latlongemot[1],latlongemot[2]))
