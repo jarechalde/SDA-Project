@@ -61,7 +61,7 @@ def getfiles(filtery,filterm,filterd):
  
   #Due to size limitations in Googles instances we will only use 2016 and 2017 data
   yearlist = ["2016"]
-  if filtery == 1 
+  if filtery == 1:
    if year not in yearlist:
     continue  	
  
@@ -155,11 +155,11 @@ def closecluster():
  os.system("/usr/local/hadoop/sbin/stop-dfs.sh")
  os.system("/usr/local/hadoop/sbin/stop-yarn.sh")
 
-#startcluster()
-#getfiles(1,0,0)
+startcluster()
+getfiles(1,0,0)
 #mapreducejob()
-#closecluster()
-#cleanfiles()
-removefiles()
+closecluster()
+###cleanfiles
+###removefiles
 
 #We will get the files and then run the mapreduce job
