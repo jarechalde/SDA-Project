@@ -37,9 +37,10 @@ gkgurls.close()
 dataurls = open("gkgfiles.txt","r")
 dataurls = dataurls.readlines()
 
-#Starting hadoop cluster
-os.system("/usr/local/hadoop/sbin/start-dfs.sh")
-os.system("/usr/local/hadoop/sbin/start-yarn.sh")
+def startcluster():
+ #Starting hadoop cluster
+ os.system("/usr/local/hadoop/sbin/start-dfs.sh")
+ os.system("/usr/local/hadoop/sbin/start-yarn.sh")
 
 #Leaving safe mode
 os.system("/usr/local/hadoop/bin/hadoop dfsadmin -safemode leave")
@@ -133,17 +134,29 @@ def mapreducejob():
  #Removing the output from hdfs
  os.system("hdfs dfs -rm -r /home/hduser/Hadoop/hadoop-output/")
 
+
+def cleanfiles():
  #Removing temporary files
+ os.system("hdfs namenode -format")
  os.system("sudo rm -r /app/hadoop/tmp")
  os.system("sudo mkdir -p /app/hadoop/tmp")
  os.system("sudo chown hduser:hadoop /app/hadoop/tmp")
  os.system("sudo chmod 750 /app/hadoop/tmp")
 
+def removefiles():
+ os.system("hdfs dfs -rm -r /home/hduser/Files")
+ os.system("hdfs namenode -format")
 
-#We will get the files and then run the mapreduce job
+def closecluster():
+ #Closing the cluster
+ os.system("/usr/local/hadoop/sbin/stop-dfs.sh")
+ os.system("/usr/local/hadoop/sbin/stop-yarn.sh")
+
+startcluster()
 getfiles()
 mapreducejob()
+closecluster()
+#cleanfiles()
+removefiles()
 
-#Closing the cluster
-os.system("/usr/local/hadoop/sbin/stop-dfs.sh")
-os.system("/usr/local/hadoop/sbin/stop-yarn.sh")
+#We will get the files and then run the mapreduce job
