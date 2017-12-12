@@ -46,7 +46,7 @@ def startcluster():
 os.system("/usr/local/hadoop/bin/hadoop dfsadmin -safemode leave")
 
 #Function for getting the files
-def getfiles():
+def getfiles(filtery,filterm,filterd):
  
  #For each url in the gkg urls we will get the filename, year, month and day
  for url in dataurls:
@@ -61,16 +61,19 @@ def getfiles():
  
   #Due to size limitations in Googles instances we will only use 2016 and 2017 data
   yearlist = ["2016"]
-  if year not in yearlist:
-   continue  	
+  if filtery == 1 
+   if year not in yearlist:
+    continue  	
  
-  monthlist = ["01"]
-  if month not in monthlist:
-   continue
+  monthlist = ["01"] 
+  if filterm == 1: 
+   if month not in monthlist:
+    continue
 
   daylist = ["01"]
-  if day not in daylist:
-   continue
+  if filterd == 1:
+   if day not in daylist:
+    continue
 
   #Removing the temporary files before downloading our files
   try:
@@ -152,10 +155,10 @@ def closecluster():
  os.system("/usr/local/hadoop/sbin/stop-dfs.sh")
  os.system("/usr/local/hadoop/sbin/stop-yarn.sh")
 
-startcluster()
-getfiles()
-mapreducejob()
-closecluster()
+#startcluster()
+#getfiles(1,0,0)
+#mapreducejob()
+#closecluster()
 #cleanfiles()
 removefiles()
 
