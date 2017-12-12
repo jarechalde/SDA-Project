@@ -43,7 +43,7 @@ def startcluster():
  os.system("/usr/local/hadoop/sbin/start-yarn.sh")
 
 #Leaving safe mode
-os.system("/usr/local/hadoop/bin/hadoop dfsadmin -safemode leave")
+#os.system("/usr/local/hadoop/bin/hadoop dfsadmin -safemode leave")
 
 #Function for getting the files
 def getfiles(filtery,filterm,filterd):
@@ -125,7 +125,18 @@ def mapreducejob():
  command += "-mapper /home/hduser/Work/SDA-Project/MapHadoop.py "
  command += "-file /home/hduser/Work/SDA-Project/ReducerHadoop.py "
  command += "-reducer /home/hduser/Work/SDA-Project/ReducerHadoop.py " 
- command += "-input /home/hduser/Files/2016/01/01/* " #This line will specify the input files for the mapreduce job
+ command += "-input /home/hduser/Files/2016/01/01/ "  
+
+ #Skipping this for now 
+ for i in range(1,30): 
+  continue 
+  j = str(i)   
+ 
+  if i<10:
+   command += "-input /home/hduser/Files/2016/01/0"+j+" " #This line will specify the input files for the mapreduce job
+  else:
+   command += "-input /home/hduser/Files/2016/01/"+j+" " 
+
  command += "-output /home/hduser/Hadoop/hadoop-output"
 
  #Running the  mapreduce job
@@ -156,10 +167,10 @@ def closecluster():
  os.system("/usr/local/hadoop/sbin/stop-yarn.sh")
 
 startcluster()
-getfiles(1,0,0)
-#mapreducejob()
+#getfiles(1,1,1)
+mapreducejob()
 closecluster()
-###cleanfiles
-###removefiles
+#cleanfiles()
+#removefiles()
 
 #We will get the files and then run the mapreduce job
