@@ -39,9 +39,9 @@ dataurls = dataurls.readlines()
 
 def startcluster():
  #Starting hadoop cluster
- os.system("/usr/local/hadoop/sbin/start-dfs.sh")
- os.system("/usr/local/hadoop/sbin/start-yarn.sh")
-
+ #os.system("/usr/local/hadoop/sbin/start-dfs.sh")
+ #os.system("/usr/local/hadoop/sbin/start-yarn.sh")
+ os.system("/usr/local/hadoop/sbin/start-all.sh")
 #Leaving safe mode
 #os.system("/usr/local/hadoop/bin/hadoop dfsadmin -safemode leave")
 
@@ -163,8 +163,9 @@ def removefiles():
 
 def closecluster():
  #Closing the cluster
- os.system("/usr/local/hadoop/sbin/stop-dfs.sh")
- os.system("/usr/local/hadoop/sbin/stop-yarn.sh")
+ #os.system("/usr/local/hadoop/sbin/stop-dfs.sh")
+ #os.system("/usr/local/hadoop/sbin/stop-yarn.sh")
+ os.system("/usr/local/hadoop/sbin/stop-all.sh")
 
 startcluster()
 #getfiles(1,1,1)
