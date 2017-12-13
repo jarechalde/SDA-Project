@@ -168,8 +168,8 @@ def closecluster():
  os.system("/usr/local/hadoop/sbin/stop-all.sh")
 
 startcluster()
-#getfiles(1,1,1)
-mapreducejob()
+getfiles(1,0,0)
+#mapreducejob()
 closecluster()
 #cleanfiles()
 #removefiles()
