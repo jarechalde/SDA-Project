@@ -92,6 +92,7 @@ def getfiles(filtery,filterm,filterd):
 
   for line in mydatal:
    line = line.split("\t")
+   print(line[15])
    myrdata.write(line[10] + "\t" +line[15] + "\n")
    
   myrdata.close()
