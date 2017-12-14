@@ -1,12 +1,12 @@
 # MAP REDUCE On the GDELTS GKG Dataset
 
-This Projects objective is to use map-reduce in a hadoop cluster, for sentiment analysis, using the GDELTS dataset.
+This Projects objective is run use map-reduce in a hadoop cluster, for sentiment analysis, using the GDELTS dataset.
 
 ## Getting Started
 
-First we will start by setting up the hadoop cluster, for this we will create 4 instances, and configure them as follows.
+First we will start by setting up the hadoop cluster, for this project we will create 4 instances, and configure them as it follows.
 
-### Prerequisites
+### 1. Installing java [ALL]
 
 First we will need to install java.
 
