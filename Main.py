@@ -1,6 +1,7 @@
 import urllib2
 import urllib
 import os
+import csv
 
 #First we get the file that contains all the urls for the files that we are going to use in this project
 files  = urllib2.urlopen('http://data.gdeltproject.org/gdeltv2/masterfilelist.txt')
@@ -114,12 +115,10 @@ def getfiles(filtery,filterm,filterd):
   mydata = open(addressdata, 'r')
   mydatal = mydata.readlines()
 
-  mydatar = open(addressdatar, 'w')
-  
-  #For each line in the CSV file we will keep the 10 and 15 fields
+  mydatar = open(addressdatar, 'a')
   for line in mydatal:
-   data = line.split("\t")
-   mydatar.write(data[10] + "\t" + data[15] + "\n")
+   data = line.split('\t')
+   mydatar.write('{}\t{}'.format(data[10],data[15]))
   
   #Closing the files
   mydata.close()
@@ -145,7 +144,7 @@ def mapreducejob():
  command += "-mapper /home/hduser/Work/SDA-Project/MapHadoop.py "
  command += "-file /home/hduser/Work/SDA-Project/ReducerHadoop.py "
  command += "-reducer /home/hduser/Work/SDA-Project/ReducerHadoop.py " 
- command += "-input /home/hduser/Files/2016/01/01/ "  
+ command += "-input /home/hduser/Files/2016/01/01/* "  
 
  #Skipping this for now 
  for i in range(1,30): 
@@ -186,10 +185,10 @@ def closecluster():
  os.system("/usr/local/hadoop/sbin/stop-yarn.sh")
 
 startcluster()
+removefiles()
 getfiles(1,1,1)
-#mapreducejob()
+mapreducejob()
 #cleanfiles()
-#removefiles()
 closecluster()
 
 #We will get the files and then run the mapreduce job

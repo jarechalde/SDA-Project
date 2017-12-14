@@ -10,8 +10,6 @@ logging.basicConfig(filename="Mapper.log", level=logging.INFO)
 
 for line in sys.stdin:
 
- #print(line)
-
  line = line.split("\t")
 
  #Initializing the list that will contain lat,long, and emotion
@@ -22,6 +20,7 @@ for line in sys.stdin:
  
  #Emotions for this locations
  emot = line[2]
+
 
  #If there are no locations in this row, we are not interested into this row, so we skip it:
  if loc==None:
