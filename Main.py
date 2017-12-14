@@ -162,7 +162,7 @@ def mapreducejob():
  os.system(command)
 
  #Now lets copy the files from the hdfs into our local system
- os.system("hdfs dfs -get /home/hduser/Hadoop/hadoop-output/* /home/hduser/Results")
+ os.system("hdfs dfs -get /home/hduser/Hadoop/hadoop-output/* /home/hduser/Work/SDA-Project/Results")
 
  #Removing the output from hdfs
  os.system("hdfs dfs -rm -r /home/hduser/Hadoop/hadoop-output/")
@@ -185,8 +185,8 @@ def closecluster():
  os.system("/usr/local/hadoop/sbin/stop-yarn.sh")
 
 startcluster()
-removefiles()
-getfiles(1,1,1)
+#removefiles()
+#getfiles(1,1,1)
 mapreducejob()
 #cleanfiles()
 closecluster()
