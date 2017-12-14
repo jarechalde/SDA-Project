@@ -107,12 +107,32 @@ def getfiles(filtery,filterm,filterd):
   fileunzip = filename.split(".")
   fileunzip = fileunzip[0]+".gkg.csv"
  
+  #Reducing the file before transferring it to hadoop file system
+  addressdata = "/usr/local/hadoop/tmp/Files/"+year+"/"+month+"/"+day+"/"+fileunzip
+  addressdatar = "/usr/local/hadoop/tmp/Files/"+year+"/"+month+"/"+day+"/RED_"+fileunzip
+
+  mydata = open(addressdata, 'r')
+  mydatal = mydata.readlines()
+
+  mydatar = open(addressdatar, 'w')
+  
+  #For each line in the CSV file we will keep the 10 and 15 fields
+  for line in mydatal:
+   data = line.split("\t")
+   mydatar.write(data[10] + "\t" + data[15] + "\n")
+  
+  #Closing the files
+  mydata.close()
+  mydatar.close()
+  
+
   #Copying the file into hadoop file system
   os.system("hdfs dfs -mkdir -p /home/hduser/Files/"+year+"/"+month+"/"+day)
-  os.system("hdfs dfs -copyFromLocal "+"/usr/local/hadoop/tmp/Files/"+year+"/"+month+"/"+day+"/"+fileunzip+" /home/hduser/Files/"+year+"/"+month+"/"+day+"/"+fileunzip)
+  os.system("hdfs dfs -copyFromLocal "+"/usr/local/hadoop/tmp/Files/"+year+"/"+month+"/"+day+"/RED_"+fileunzip+" /home/hduser/Files/"+year+"/"+month+"/"+day+"/"+fileunzip)
 
-  #Deleting the file from our local system after copying into hadoop file system 
+  #Deleting the files from our local system after copying into hadoop file system 
   os.system("rm "+"'/usr/local/hadoop/tmp/Files/"+year+"/"+month+"/"+day+"/"+fileunzip+"'")
+  os.system("rm "+"'/usr/local/hadoop/tmp/Files/"+year+"/"+month+"/"+day+"/RED_"+fileunzip+"'")
 
 def mapreducejob():
 
@@ -159,7 +179,6 @@ def cleanfiles():
 
 def removefiles():
  os.system("hdfs dfs -rm -r /home/hduser/Files")
- os.system("hdfs namenode -format")
 
 def closecluster():
  #Closing the cluster
@@ -169,8 +188,8 @@ def closecluster():
 startcluster()
 getfiles(1,1,1)
 #mapreducejob()
-closecluster()
 #cleanfiles()
 #removefiles()
+closecluster()
 
 #We will get the files and then run the mapreduce job

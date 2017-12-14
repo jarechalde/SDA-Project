@@ -18,10 +18,10 @@ for line in sys.stdin:
  listlatlongem = []
 
  #Locations
- loc = line[10]
+ loc = line[1]
  
  #Emotions for this locations
- emot = line[15]
+ emot = line[2]
 
  #If there are no locations in this row, we are not interested into this row, so we skip it:
  if loc==None:
