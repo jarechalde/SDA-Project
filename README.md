@@ -16,24 +16,24 @@ We will create on Google Cloud Platform 4 instances that will serve as master an
 First we will need to install java.
 
 ```
-sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install default-jre
-sudo apt-get install default-jdk
+[1] sudo apt-get update
+[2] sudo apt-get upgrade
+[3] sudo apt-get install default-jre
+[4] sudo apt-get install default-jdk
 ```
 
 To check if Java was installed correctly we can run this command
 ```
-java -version
+[1] java -version
 ```
 And the java version should show up in case it was successfully installed.
 
 ### [MASTER] 2. Installing unzip 
 
-Our main file will be using unzip to unzip all the incoming files, so we will need to install the unzip package on the master node. This can be done by executing this simple command.
+Our main script will be using unzip to unzip all the incoming files, so we will need to install the unzip package on the master node. This can be done by executing this simple command.
 
 ```
-sudo apt-get install unzip
+[1] sudo apt-get install unzip
 ```
 
 ### [ALL] 3. Creating Hadoop users
@@ -60,108 +60,168 @@ The master node should be able to access all the other nodes in the cluster with
 [1] ssh-keygen -t rsa -P ""
 [2] cat $HOME/.ssh/id_rsa.pub
 ```
-[ALL] Then we will need to add the IP addresses of the all the instances to the hosts file in all instances. We can open this file by running this command.
-sudo nano /etc/hosts
-[ALL] Then we will need to add the following lines to the file. The IP we need to use is the Internal IP that is shown in the Google Compute Engine Dashboard.
+### [ALL] 5. Configuring IP addresses of slaves and masters and disabling ipv6
+
+Then we will need to add the IP addresses of the all the instances to the hosts file in all instances. We can open this file by running this command.
+
+```
+[1] sudo nano /etc/hosts
+```
+
+Then we will need to add the following lines to the file. The IP we need to use is the Internal IP that is shown in the Google Compute Engine Dashboard.
+
+```
 [IP of Master] master
 [IP of slave1] slave1
 [IP of slave2] slave2
 ...
 [IP of slaveN] slaveN
+```
 
-[ALL] Then we will need to disable ipv6 by adding this lines to /etc/sysct1.conf. 
+Then we will need to disable ipv6 by adding this lines to /etc/sysct1.conf. 
+
+```
 # disable ipv6
 net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
+```
 
-[MASTER] Now we can check if we can connect to the slave and master nodes from the master node. To check this, we must run the following commands and answer yes whenever they ask us if we want to continue connecting.
-ssh master
-ssh slave1
-ssh slave2
+### [MASTER] 6. Checking connection to the slaves
+
+Now we can check if we can connect to the slave and master nodes from the master node. To check this, we must run the following commands and answer yes whenever they ask us if we want to continue connecting.
+
+```
+[1] ssh master
+[2] ssh slave1
+[3] ssh slave2
 ...
-ssh slaveN
+[N] ssh slaveN
+```
 
+### [ALL] 7. Installing and configuring Hadoop
 
-[ALL] Now we will proceed to install Hadoop. First, we will go to the local folder, then we will download Hadoop, then we will extract it and move it to the Hadoop folder. To get the URL, go to Hadoops Releases webpage and get the last released binary file download address, in this case 2.9.0.
+Now we will proceed to install Hadoop. First, we will go to the local folder, then we will download Hadoop, then we will extract it and move it to the Hadoop folder. To get the URL, go to Hadoops Releases webpage and get the last released binary file download address, in this case 2.9.0.
 
-cd /usr/local
-wget [download_url]
-sudo tar xzf [file name]
-sudo mv [extracted folder name] hadoop
-sudo chown – R hduser:hadoop hadoop
+```
+[1] cd /usr/local
+[2] wget [download_url]
+[3] sudo tar xzf [file name]
+[4] sudo mv [extracted folder name] hadoop
+[5] sudo chown – R hduser:hadoop hadoop
+```
 
-[ALL] Now we need to add Hadoop home and java home to the path
-sudo nano $HOME/.bashrc
+Now we need to add Hadoop home and java home to the path
+
+```
+[1]sudo nano $HOME/.bashrc
+```
 Add the following lines at the end of the file.
+
+```
 export HADOOP_HOME =/usr/local/hadoop
 export JAVA_HOME = /usr/lib/jvm/default-java
+```
 
-[ALL] Then we configure the Hadoop environment variables.
-sudo nano /usr/local/hadoop/etc/hadoop-env.sh
+Then we configure the Hadoop environment variables.
+
+```
+[1] sudo nano /usr/local/hadoop/etc/hadoop-env.sh
+```
+
 Edit the JAVA_HOME value in the file with the java directory.
+
+```
 export JAVA_HOME = /usr/lib/jvm/default-java
+```
 
-[ALL] Create a temporary folder so hadoop can store its files while we download them and transfer them to Hadoop File Hystem.
-sudo mkdir -p /app/hadoop/tmp
-sudo chown hduser:hadoop /app/hadoop/tmp
-sudo chmod 750 /app/hadoop/tmp
+Create a temporary folder so hadoop can store its files while we download them and transfer them to Hadoop File Hystem.
+```
+[1] sudo mkdir -p /app/hadoop/tmp
+[2] sudo chown hduser:hadoop /app/hadoop/tmp
+[3] sudo chmod 750 /app/hadoop/tmp
+```
+### [MASTER] 8. Configuring master and slaves 
 
-[MASTER] Configure the masters’ and slaves’ files.
+Configure the masters' and slaves' files.
 Masters file.
-sudo nano /usr/local/hadoop/etc/hadoop/masters
+```
+[1] sudo nano /usr/local/hadoop/etc/hadoop/masters
+```
 Add the following line.
+```
 master
-
+```
 Slaves file.
-sudo nano /usr/local/hadoop/etc/hadoop/slaves
+```
+[1] sudo nano /usr/local/hadoop/etc/hadoop/slaves
+```
 Add the following lines.
-master
+```
+master //Yes, in this project the master node will be a slave node too
 slave1
 ...
 slaveN
+```
+### [ALL] 9. Configuring HDFS and YARN 
 
-[ALL] Configure the site xml file in all machines
-sudo nano /usr/local/hadoop/etc/hadoop/core-site.xml
-Add the following lines.
+Configure the site xml file in all machines
+```
+[1] sudo nano /usr/local/hadoop/etc/hadoop/core-site.xml
+```
+Add the following lines in between configuration.
+```
 <property>
-<name>hadoop.tmp.dir</name>
-<value>/app/hadoop/tmp</value>
+  <name>hadoop.tmp.dir</name>
+  <value>/app/hadoop/tmp</value>
 </property>
 <property>
-<name>fs.defaultFS</name>
-<value>hdfs://master:54310</value>
+  <name>fs.defaultFS</name>
+  <value>hdfs://master:54310</value>
 </property>
+```
 
-[ALL] Configure mapred-site.xml
-sudo nano /usr/local/hadoop/etc/hadoop/mapred-site.xml
-Add the following lines.
+Configure mapred-site.xml
+```
+[1] sudo nano /usr/local/hadoop/etc/hadoop/mapred-site.xml
+```
+Add the following lines in between configuration.
+```
 <property>
-<name>mapreduce.framework.name</name>
-<value>yarn</value>
+  <name>mapreduce.framework.name</name>
+  <value>yarn</value>
 </property>
+```
 
-[ALL] Configure hfs-site.xml inside value put the number of slaves, in this case 4, as the master node is also a Data Node.
-sudo nano /usr/local/hadoop/etc/hadoop/hdfs-site.xml
-Add the following lines.
+Configure hfs-site.xml. Inside value put the number of slaves, in this case 4, as the master node is also a Data Node.
+```
+[1] sudo nano /usr/local/hadoop/etc/hadoop/hdfs-site.xml
+```
+Add the following lines in between configuration.
+```
 <property>
   <name>dfs.replication</name>
   <value>4</value>
 </property>
-
-[ALL] Configure yarn-site.xml.
-sudo nano /usr/local/hadoop/etc/hadoop/yarn-site.xml
-Add the following lines.
+```
+Configure yarn-site.xml.
+```
+[1] sudo nano /usr/local/hadoop/etc/hadoop/yarn-site.xml
+```
+Add the following lines in between configuration.
+```
 <property>
-<name>yarn.nodemanager.aux-services</name>
-<value>mapreduce_shuffle</value>
+  <name>yarn.nodemanager.aux-services</name>
+  <value>mapreduce_shuffle</value>
 </property>
 <property>
-<name>yarn.resourcemanager.hostname</name>
-<value>master</value>
+  <name>yarn.resourcemanager.hostname</name>
+  <value>master</value>
 </property>
+```
+### [ALL] 10. Formatting the file system 
 
-[MASTER] Finally we need to configure the file system:
+Finally we need to configure the file system:
 bin/hadoop namenode -format
 
 
