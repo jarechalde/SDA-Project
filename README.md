@@ -11,7 +11,7 @@ First we will start by setting up the hadoop cluster, for this project we will c
 
 We will create on Google Cloud Platform 4 instances that will serve as master and slave nodes for our project. We created 4 instances each one of them having 1 vCore and 4 GB of RAM, and 500GB of disk each one, due to the limitation of 2TB inside a project. Ths instances will be running Ubuntu 16.04 LTS
 
-### [ALL] 1. Installing java
+### 1. Installing java [ALL]
 
 First we will need to install java.
 
@@ -28,7 +28,7 @@ To check if Java was installed correctly we can run this command
 ```
 And the java version should show up in case it was successfully installed.
 
-### [MASTER] 2. Installing unzip 
+### 2. Installing unzip [MASTER]
 
 Our main script will be using unzip to unzip all the incoming files, so we will need to install the unzip package on the master node. This can be done by executing this simple command.
 
@@ -36,7 +36,7 @@ Our main script will be using unzip to unzip all the incoming files, so we will 
 [1] sudo apt-get install unzip
 ```
 
-### [ALL] 3. Creating Hadoop users
+### 3. Creating Hadoop users [ALL]
 
 Then we continue by adding a user for Hadoop in the users group, and giving this user superuser permissions, this should be done in all instances too. You can choose any password you like, it won’t affect any part of this process.
 
@@ -52,7 +52,7 @@ Then we should login into the created username in all the instances.
 [1] su – hduser
 ```
 
-### [MASTER] 4. Giving access to the slave nodes to the master node
+### 4. Giving access to the slave nodes to the master node [MASTER]
 
 The master node should be able to access all the other nodes in the cluster without a ssh key, to run the map-reduce job, so we need to create a public key by running the first command. After running the second command, we will get the key string. The way Google instances get the ssh keys is different than in any other service. Google instances get the ssh key values from Google Cloud Platform whenever they are started, so we will need to copy the key string obtained by executing the second command to Metadata > SSH Keys on the Google Cloud Platform Computer Engine menu. Then when we connect to any of the instances, Google Cloud Platform will pass this keys to the instance and add it to the authorized keys list. If this setup was done in another service, the key value should be added manually to the authorized keys list in the other instances manually.
 
@@ -60,7 +60,7 @@ The master node should be able to access all the other nodes in the cluster with
 [1] ssh-keygen -t rsa -P ""
 [2] cat $HOME/.ssh/id_rsa.pub
 ```
-### [ALL] 5. Configuring IP addresses of slaves and masters and disabling ipv6
+### 5. Configuring IP addresses of slaves and masters and disabling ipv6 [ALL]
 
 Then we will need to add the IP addresses of the all the instances to the hosts file in all instances. We can open this file by running this command.
 
@@ -87,7 +87,7 @@ net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
 ```
 
-### [MASTER] 6. Checking connection to the slaves
+### 6. Checking connection to the slaves [MASTER]
 
 Now we can check if we can connect to the slave and master nodes from the master node. To check this, we must run the following commands and answer yes whenever they ask us if we want to continue connecting.
 
@@ -99,7 +99,7 @@ Now we can check if we can connect to the slave and master nodes from the master
 [N] ssh slaveN
 ```
 
-### [ALL] 7. Installing and configuring Hadoop
+### 7. Installing and configuring Hadoop [ALL]
 
 Now we will proceed to install Hadoop. First, we will go to the local folder, then we will download Hadoop, then we will extract it and move it to the Hadoop folder. To get the URL, go to Hadoops Releases webpage and get the last released binary file download address, in this case 2.9.0.
 
@@ -141,7 +141,7 @@ Create a temporary folder so hadoop can store its files while we download them a
 [2] sudo chown hduser:hadoop /app/hadoop/tmp
 [3] sudo chmod 750 /app/hadoop/tmp
 ```
-### [MASTER] 8. Configuring master and slaves 
+### 8. Configuring master and slaves [MASTER]
 
 Configure the masters' and slaves' files.
 Masters file.
@@ -163,7 +163,7 @@ slave1
 ...
 slaveN
 ```
-### [ALL] 9. Configuring HDFS and YARN 
+### 9. Configuring HDFS and YARN [ALL]
 
 Configure the site xml file in all machines
 ```
@@ -219,11 +219,13 @@ Add the following lines in between configuration.
   <value>master</value>
 </property>
 ```
-### [ALL] 10. Formatting the file system 
+### 10. Formatting the file system [ALL]
 
 Finally we need to configure the file system:
-bin/hadoop namenode -format
 
+```
+[1] hdfs namenode -format
+```
 
 ## Running the tests
 
