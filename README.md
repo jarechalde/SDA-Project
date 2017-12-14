@@ -2,11 +2,16 @@
 
 This Projects objective is run use map-reduce in a hadoop cluster, for sentiment analysis, using the GDELTS dataset.
 
+# Data used in this project
+The data used in this project is available as a list of links to the files [here](http://data.gdeltproject.org/gdeltv2/masterfilelist.txt), but our main script will download it on our instance automatically and select the urls that we will use.
+
 ## Getting Started
 
 First we will start by setting up the hadoop cluster, for this project we will create 4 instances, and configure them as it follows.
 
-### 1. Installing java [ALL]
+We will create on Google Cloud Platform 4 instances that will serve as master and slave nodes for our project. We created 4 instances each one of them having 1 vCore and 4 GB of RAM, and 500GB of disk each one, due to the limitation of 2TB inside a project. Ths instances will be running Ubuntu 16.04 LTS
+
+### [ALL] 1. Installing java
 
 First we will need to install java.
 
@@ -23,29 +28,142 @@ java -version
 ```
 And the java version should show up in case it was successfully installed.
 
-### Installing
+### [MASTER] 2. Installing unzip 
 
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
+Our main file will be using unzip to unzip all the incoming files, so we will need to install the unzip package on the master node. This can be done by executing this simple command.
 
 ```
-Give the example
+sudo apt-get install unzip
 ```
 
-And repeat
+### [ALL] 3. Creating Hadoop users
+
+Then we continue by adding a user for Hadoop in the users group, and giving this user superuser permissions, this should be done in all instances too. You can choose any password you like, it won’t affect any part of this process.
 
 ```
-until finished
+[1] sudo addgroup hadoop
+[2] sudo adduser –-ingroup hadoop hduser
+[3] sudo usermod -aG sudo hduser
 ```
 
-After installing Hadoop in the machine, we need to add it to the path, in order to do this we will need to edit the ~/.bashrc file. After that, we will be ready to start transferring files to the Hadoop file system in order to start working with hadoop.
+Then we should login into the created username in all the instances.
+
 ```
-export PATH=$PATH:usr/local/hadoop/bin
+[1] su – hduser
 ```
 
+### [MASTER] 4. Giving access to the slave nodes to the master node
 
-End with an example of getting some data out of the system or using it for a little demo
+The master node should be able to access all the other nodes in the cluster without a ssh key, to run the map-reduce job, so we need to create a public key by running the first command. After running the second command, we will get the key string. The way Google instances get the ssh keys is different than in any other service. Google instances get the ssh key values from Google Cloud Platform whenever they are started, so we will need to copy the key string obtained by executing the second command to Metadata > SSH Keys on the Google Cloud Platform Computer Engine menu. Then when we connect to any of the instances, Google Cloud Platform will pass this keys to the instance and add it to the authorized keys list. If this setup was done in another service, the key value should be added manually to the authorized keys list in the other instances manually.
+
+```
+[1] ssh-keygen -t rsa -P ""
+[2] cat $HOME/.ssh/id_rsa.pub
+```
+[ALL] Then we will need to add the IP addresses of the all the instances to the hosts file in all instances. We can open this file by running this command.
+sudo nano /etc/hosts
+[ALL] Then we will need to add the following lines to the file. The IP we need to use is the Internal IP that is shown in the Google Compute Engine Dashboard.
+[IP of Master] master
+[IP of slave1] slave1
+[IP of slave2] slave2
+...
+[IP of slaveN] slaveN
+
+[ALL] Then we will need to disable ipv6 by adding this lines to /etc/sysct1.conf. 
+# disable ipv6
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+
+[MASTER] Now we can check if we can connect to the slave and master nodes from the master node. To check this, we must run the following commands and answer yes whenever they ask us if we want to continue connecting.
+ssh master
+ssh slave1
+ssh slave2
+...
+ssh slaveN
+
+
+[ALL] Now we will proceed to install Hadoop. First, we will go to the local folder, then we will download Hadoop, then we will extract it and move it to the Hadoop folder. To get the URL, go to Hadoops Releases webpage and get the last released binary file download address, in this case 2.9.0.
+
+cd /usr/local
+wget [download_url]
+sudo tar xzf [file name]
+sudo mv [extracted folder name] hadoop
+sudo chown – R hduser:hadoop hadoop
+
+[ALL] Now we need to add Hadoop home and java home to the path
+sudo nano $HOME/.bashrc
+Add the following lines at the end of the file.
+export HADOOP_HOME =/usr/local/hadoop
+export JAVA_HOME = /usr/lib/jvm/default-java
+
+[ALL] Then we configure the Hadoop environment variables.
+sudo nano /usr/local/hadoop/etc/hadoop-env.sh
+Edit the JAVA_HOME value in the file with the java directory.
+export JAVA_HOME = /usr/lib/jvm/default-java
+
+[ALL] Create a temporary folder so hadoop can store its files while we download them and transfer them to Hadoop File Hystem.
+sudo mkdir -p /app/hadoop/tmp
+sudo chown hduser:hadoop /app/hadoop/tmp
+sudo chmod 750 /app/hadoop/tmp
+
+[MASTER] Configure the masters’ and slaves’ files.
+Masters file.
+sudo nano /usr/local/hadoop/etc/hadoop/masters
+Add the following line.
+master
+
+Slaves file.
+sudo nano /usr/local/hadoop/etc/hadoop/slaves
+Add the following lines.
+master
+slave1
+...
+slaveN
+
+[ALL] Configure the site xml file in all machines
+sudo nano /usr/local/hadoop/etc/hadoop/core-site.xml
+Add the following lines.
+<property>
+<name>hadoop.tmp.dir</name>
+<value>/app/hadoop/tmp</value>
+</property>
+<property>
+<name>fs.defaultFS</name>
+<value>hdfs://master:54310</value>
+</property>
+
+[ALL] Configure mapred-site.xml
+sudo nano /usr/local/hadoop/etc/hadoop/mapred-site.xml
+Add the following lines.
+<property>
+<name>mapreduce.framework.name</name>
+<value>yarn</value>
+</property>
+
+[ALL] Configure hfs-site.xml inside value put the number of slaves, in this case 4, as the master node is also a Data Node.
+sudo nano /usr/local/hadoop/etc/hadoop/hdfs-site.xml
+Add the following lines.
+<property>
+  <name>dfs.replication</name>
+  <value>4</value>
+</property>
+
+[ALL] Configure yarn-site.xml.
+sudo nano /usr/local/hadoop/etc/hadoop/yarn-site.xml
+Add the following lines.
+<property>
+<name>yarn.nodemanager.aux-services</name>
+<value>mapreduce_shuffle</value>
+</property>
+<property>
+<name>yarn.resourcemanager.hostname</name>
+<value>master</value>
+</property>
+
+[MASTER] Finally we need to configure the file system:
+bin/hadoop namenode -format
+
 
 ## Running the tests
 
@@ -96,45 +214,3 @@ le /home/jarechalde/Project/SDA-Project/Reducer.py -reducer /home/jarechalde/Pro
 
 
 And the files should be showing there.
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
