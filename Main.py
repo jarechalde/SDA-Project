@@ -1,7 +1,6 @@
 import urllib2
 import urllib
 import os
-import csv
 
 #First we get the file that contains all the urls for the files that we are going to use in this project
 files  = urllib2.urlopen('http://data.gdeltproject.org/gdeltv2/masterfilelist.txt')
@@ -126,7 +125,7 @@ def getfiles(filtery,filterm,filterd):
     print("Missing Data")
     continue
    
-   mydatar.write('{}\t{}'.format(data[10],data[15]))
+   mydatar.write('{}\t{}\n'.format(data[10],data[15]))
   
   #Closing the files
   mydata.close()
@@ -193,9 +192,7 @@ def closecluster():
 
 startcluster()
 #removefiles()
-#getfiles(1,1,0)
-mapreducejob()
+getfiles(1,1,1)
+#mapreducejob()
 #cleanfiles()
 closecluster()
-
-#We will get the files and then run the mapreduce job

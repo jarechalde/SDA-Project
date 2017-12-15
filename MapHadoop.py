@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
-#import pyspark
 import os,logging
-#from pyspark.sql.functions import *
 import sys
 
 #Starting the logger
@@ -17,10 +15,10 @@ for line in sys.stdin:
   
  try:
   #Locations
-  loc = line[1]
+  loc = line[0]
  
   #Emotions for this locations
-  emot = line[2]
+  emot = line[1]
 
  except:
   logging.info("Input error")
