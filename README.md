@@ -1,9 +1,13 @@
 # MAP REDUCE On the GDELTS GKG Dataset
 
-This Projects objective is run use map-reduce in a hadoop cluster, for sentiment analysis, using the GDELTS dataset.
+The goal of this project is to run map-reduce on GDELT's Global Knowledge Graph data in a cluster set up in Google Cloud Platform. We will start by setting up the cluster, the we will download the files and transfer them to HDFS, and once the files are replicated in all the DataNodes, we will run MapReduce 2.0 or YARN over our data, using a Mapper and a Reducer function implemented in this project too. Our last step will be to plot the results using Matplotlib's Basemap Toolkit.
 
 # Data used in this project
-The data used in this project is available as a list of links to the files [here](http://data.gdeltproject.org/gdeltv2/masterfilelist.txt), but our main script will download it on our instance automatically and select the urls that we will use.
+The data used in this project is available as a list of links to the files [here](http://data.gdeltproject.org/gdeltv2/masterfilelist.txt), our main script will download this files on our instance automatically and select the urls that we will use to download the data.
+
+In this project, as we mentioned before, we will only use GDELT's GKG data. This data has been stored in GDELT's last format 2.1 from January 2015 until this very moment, in intervals of 15 minutes.
+
+More information about how this data is stored is available [here](http://data.gdeltproject.org/documentation/GDELT-Global_Knowledge_Graph_Codebook-V2.1.pdf).
 
 # Getting Started
 
@@ -227,52 +231,32 @@ Finally we need to configure the file system:
 [1] hdfs namenode -format
 ```
 
-## Running the tests
+# Running Map-Reduce over our dataset
 
-###1. First Map-Reducer 
+Once the cluster
 
-After creating the Python Mapper and Reducer functions, we ran some tests to see if they were behaving properly. For this tests, we didn't use hdfs.
+# Results
 
+To show our results, the Python script I developed will use Matplotlib's Basemap Toolkit as we mentioned at the beginning of this document. It will also use Numpy to manipulate our data. So the first step of this last part will be to install all the modules that we will need for this script to run.
 ```
-find . -name \*2016010112*\ -print | /home/jarechalde/Project/SDA-PROJECT/Map3.py | sort -k1,1 -k2,1 | /home/jarechalde/Project/SDA-Project/Reducer.py
-```
-This test, sends the mapper file a list of CSV files, the mapper takes this files and extracts all the coordinates found in this file, after that we sort the coordinates in ascending order, first the longitude and then the latitude. In the end, we send this list to the reducer function, which takes this list as an input and reduces them, counting the number of times each location appeared, and calculating the average of the sentiments for each unique location.
-
-Explain how to run the automated tests for this system
-
-###2. Testing the map reducer on Hadoop
-
-Now we will test Map Reduce on Hadoop, for that we will first need to transfer our data files to hadoop file system. We will test this first copying only one days data.
-
-```
-hdfs dfs -copyFromLocal ~/Path-to-local-Files/Files/2016/01/01 ~/Path-to-some-other-folder/
+[1] sudo apt-get install python-matplotlib
+[2] sudo apt-get install python-mpltoolkits.basemap
+[3] sudo apt-get install python-numpy //This may be unnecesary, as when we install matplotlib, the numpy package is installed too
 ```
 
-To check if the files were copied successfully we run this command.
-
+Another way of installing this tool may be using Python's pip instead.
 ```
-hdfs dfs -ls
-```
-
-We have to find the hadoop streaming jar next, which maybe located in different folders depending on the hadoop version. To find it we run this command.
-
-```
-sudo find / -name "hadiio-streaming*.jar"
+[1] sudo apt-get install python-pip
 ```
 
-In my case the file was located in this folder.
-
+And then run the following commands.
 ```
-/usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.9.0.jar
-```
-
-Then we execute this command for the map-reduce
-
-```
-hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.9.0.jar -file /home/jarechalde/Project/SDA-Project/Map3.py -mapper /home/jarechalde/Project/SDA-Project/Map3.py -file /home/jarecha
-lde/Project/SDA-Project/Reducer.py -reducer /home/jarechalde/Project/SDA-Project/Reducer.py -input /home/jarechalde/Hadoop/01/* -output /home/jarechalde/Hadoop/hadoop-output
-le /home/jarechalde/Project/SDA-Project/Reducer.py -reducer /home/jarechalde/Project/SDA-Project/Reducer.py -input 
+[1] pip install matplotlib
+[2] pip install numpy
 ```
 
+Once we have installed Matplotlib, Numpy, and Basemap, we will procede to plot our results. To plot the results, we will need to run the _HeatMap.py_ script. Notice that depending on the data that we want to plot, we need to change the line that loads the file from out _Results_ folder that contains the results of running the MapReduce over our dataset.
 
-And the files should be showing there.
+Some example of the results obtained this way:
+
+[results]: https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Results"
