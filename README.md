@@ -233,7 +233,55 @@ Finally we need to configure the file system:
 
 # Running Map-Reduce over our dataset
 
-Once the cluster
+Once the cluster is set up and running, we will start downloading our data and running MapReduce over our dataset. Before doing anything, we should check if the cluster was correctly setup. To check if we successfully set up the cluster we will start by running this commands in the master node.
+```
+[1] \usr\local\hadoop\sbin\start-dfs.sh
+[2] \usr\local\hadoop\sbin\start-yarn.sh
+```
+
+These commands will start the Hadoop File System, and the resource manager. Once the startup process ends, we can check if our nodes are ready to replicate the data we download and to work on the MapReduce job by running the following command on the master node and the slave nodes.
+```
+jps
+```
+
+In the master node we should get something like this/
+```
+[process num] SecondaryNameNode
+[process num] NameNode
+[process num] NodeManager
+[process num] Jps
+[process num] FsShell
+[process num] DataNode
+[process num] ResourceManager
+```
+
+In the slave nodes, we should get something like this instead.
+```
+[process num] DataNode
+[process num] NodeManager
+[process num] Jps
+```
+
+If everything is working as expected we can proceed to download the files and run the MapReduce job. First we will stop the NodeManager, and the DataNodes by running the following command.
+```
+[1] \usr\local\hadoop\sbin\stop-dfs.sh
+[2] \usr\local\hadoop\sbin\stop-yarn.sh
+```
+
+Our MapReduce process will be running a custom Mapper and Reduced that we implemented, so before running the MapReduce job, we must make sure that all our nodes have access to these scripts. The script tho run the MapReduce job is configured in a way that points to the Mapper and Reducer scripts in this Github project. So we should run this commands in all our instances.
+```
+[1] su - hduser
+[2] cd /home/hduser
+[3] mkdir Work
+[4] cd Work
+[5] git clone "this repo url"
+```
+
+Then we need to make sure that the scripts can be executed by the nodes, so we need to go into _SDA_Project_ folder that will appear after we clone this repository, and run the following commands on all our nodes.
+```
+chmod +x MapHadoop.py
+chmod +x ReducerHadoop.py
+```
 
 # Results
 
