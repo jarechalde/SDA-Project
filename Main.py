@@ -28,7 +28,7 @@ for url in urlslist:
    continue
   gkgurls.write(file)
  except:
-  print("ERROR, url not found")
+  print("URL lnot found")
 
 #Closing the file of gkg urls
 gkgurls.close()
@@ -42,11 +42,12 @@ def startcluster():
  os.system("/usr/local/hadoop/sbin/start-dfs.sh")
  os.system("/usr/local/hadoop/sbin/start-yarn.sh")
 
-#Leaving safe mode
-#os.system("/usr/local/hadoop/bin/hadoop dfsadmin -safemode leave")
 
 #Function for getting the files
 def getfiles(filtery,filterm,filterd):
+
+ #Leaving safe mode, so we can create folders in hdfs
+ os.system("/usr/local/hadoop/bin/hadoop dfsadmin -safemode leave")
  
  #For each url in the gkg urls we will get the filename, year, month and day
  for url in dataurls:
