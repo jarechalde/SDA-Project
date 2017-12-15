@@ -1,4 +1,4 @@
-# MAP REDUCE on the GDELTS GKG Dataset
+4# MAP REDUCE on the GDELTS GKG Dataset
 
 The goal of this project is to run map-reduce on GDELT's Global Knowledge Graph data in a cluster set up in Google Cloud Platform. We will start by setting up the cluster, the we will download the files and transfer them to HDFS, and once the files are replicated in all the DataNodes, we will run MapReduce 2.0 or YARN over our data, using a Mapper and a Reducer function implemented in this project too. Our last step will be to plot the results using Matplotlib's Basemap Toolkit.
 
@@ -333,4 +333,4 @@ python HeatMap.py
 
 And a window will open showing the results:
 
-![picture](https://raw.githubusercontent.com/jarechalde/SDA-Project/master/Mymap.jpg)"Results"
+![picture](https://raw.githubusercontent.com/jarechalde/SDA-Project/master/Mymap.jpg)
