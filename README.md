@@ -259,4 +259,4 @@ Once we have installed Matplotlib, Numpy, and Basemap, we will procede to plot o
 
 Some example of the results obtained this way:
 
-[results]: https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Results"
+![alt text](https://raw.githubusercontent.com/jarechalde/SDA-Project/master/Mymap.jpg) "Results"
