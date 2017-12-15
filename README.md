@@ -237,7 +237,7 @@ Once the cluster
 
 # Results
 
-To show our results, the Python script I developed will use Matplotlib's Basemap Toolkit as we mentioned at the beginning of this document. It will also use Numpy to manipulate our data. So the first step of this last part will be to install all the modules that we will need for this script to run.
+To show our results, the Python script developed will use Matplotlib's Basemap Toolkit as we mentioned at the beginning of this document. It will also use Numpy to manipulate our data. So the first step of this last part will be to install all the modules that we will need for this script to run.
 ```
 [1] sudo apt-get install python-matplotlib
 [2] sudo apt-get install python-mpltoolkits.basemap
@@ -257,6 +257,16 @@ And then run the following commands.
 
 Once we have installed Matplotlib, Numpy, and Basemap, we will procede to plot our results. To plot the results, we will need to run the _HeatMap.py_ script. Notice that depending on the data that we want to plot, we need to change the line that loads the file from out _Results_ folder that contains the results of running the MapReduce over our dataset.
 
-Some example of the results obtained this way:
+```
+mydata = open("/Path/to/Results/part-00000","r")
+```
 
-![picture](https://raw.githubusercontent.com/jarechalde/SDA-Project/master/Mymap.jpg) "Results"
+After updating this line to open the results file, we can finally run our script.
+
+```
+python HeatMap.py
+```
+
+And a window will open showing the results:
+
+![picture](https://raw.githubusercontent.com/jarechalde/SDA-Project/master/Mymap.jpg)"Results"
