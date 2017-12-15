@@ -7,7 +7,7 @@ from matplotlib import colors
 
 #Number of bins for our plot
 
-mydata = open("/home/javier/Work/SDA-Project/Results/part-00000","r")
+mydata = open("/home/javier/Work/SDA-Project/Results/results1/part-00000","r")
 mydata = mydata.readlines()
 
 #We will use a Cylindrical projection with a intermediate resolution, and we will only show lakes with
