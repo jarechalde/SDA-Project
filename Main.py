@@ -151,10 +151,10 @@ def mapreducejob():
  command += "-mapper /home/hduser/Work/SDA-Project/MapHadoop.py "
  command += "-file /home/hduser/Work/SDA-Project/ReducerHadoop.py "
  command += "-reducer /home/hduser/Work/SDA-Project/ReducerHadoop.py " 
- command += "-input /home/hduser/Files/2016/01/01/* "  
+ #command += "-input /home/hduser/Files/2016/01/01/* "  
 
- for i in range(1,30):  
-  continue
+ for i in range(1,31):  
+  #continue
   j = str(i)   
  
   if i<10:
@@ -174,14 +174,6 @@ def mapreducejob():
  os.system("hdfs dfs -rm -r /home/hduser/Hadoop/hadoop-output/")
 
 
-def cleanfiles():
- #Removing temporary files
- os.system("hdfs namenode -format")
- os.system("sudo rm -r /app/hadoop/tmp")
- os.system("sudo mkdir -p /app/hadoop/tmp")
- os.system("sudo chown hduser:hadoop /app/hadoop/tmp")
- os.system("sudo chmod 750 /app/hadoop/tmp")
-
 def removefiles():
  os.system("hdfs dfs -rm -r /home/hduser/Files")
 
@@ -192,7 +184,6 @@ def closecluster():
 
 startcluster()
 #removefiles()
-#getfiles(1,1,1)
-mapreducejob()
-#cleanfiles()
+getfiles(1,1,0)
+#mapreducejob()
 closecluster()

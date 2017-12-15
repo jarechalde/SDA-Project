@@ -1,0 +1,88 @@
+Starting namenodes on [master]
+master: starting namenode, logging to /usr/local/hadoop/logs/hadoop-hduser-namenode-hadoopcluster1.out
+master: starting datanode, logging to /usr/local/hadoop/logs/hadoop-hduser-datanode-hadoopcluster1.out
+slave2: starting datanode, logging to /usr/local/hadoop/logs/hadoop-hduser-datanode-hadoopcluster3.out
+slave3: starting datanode, logging to /usr/local/hadoop/logs/hadoop-hduser-datanode-hadoopcluster4.out
+slave: starting datanode, logging to /usr/local/hadoop/logs/hadoop-hduser-datanode-hadoopcluster2.out
+Starting secondary namenodes [0.0.0.0]
+0.0.0.0: starting secondarynamenode, logging to /usr/local/hadoop/logs/hadoop-hduser-secondarynamenode-hadoopcluster1.out
+starting yarn daemons
+starting resourcemanager, logging to /usr/local/hadoop/logs/yarn-hduser-resourcemanager-hadoopcluster1.out
+slave3: starting nodemanager, logging to /usr/local/hadoop/logs/yarn-hduser-nodemanager-hadoopcluster4.out
+slave2: starting nodemanager, logging to /usr/local/hadoop/logs/yarn-hduser-nodemanager-hadoopcluster3.out
+slave: starting nodemanager, logging to /usr/local/hadoop/logs/yarn-hduser-nodemanager-hadoopcluster2.out
+master: starting nodemanager, logging to /usr/local/hadoop/logs/yarn-hduser-nodemanager-hadoopcluster1.out
+DEPRECATED: Use of this script to execute hdfs command is deprecated.
+Instead use the hdfs command for it.
+
+safemode: Call From master/10.142.0.2 to master:54310 failed on connection exception: java.net.ConnectException: Connection refused; For more details see:  http://wiki.apache.org/hadoop/ConnectionRefused
+17/12/15 21:23:59 WARN streaming.StreamJob: -file option is deprecated, please use generic option -files instead.
+packageJobJar: [/home/hduser/Work/SDA-Project/MapHadoop.py, /home/hduser/Work/SDA-Project/ReducerHadoop.py, /tmp/hadoop-unjar4853800468621449084/] [] /tmp/streamjob3555318272573677143.jar tmpDir=null
+17/12/15 21:24:03 INFO client.RMProxy: Connecting to ResourceManager at master/10.142.0.2:8032
+17/12/15 21:24:03 INFO client.RMProxy: Connecting to ResourceManager at master/10.142.0.2:8032
+17/12/15 21:24:04 ERROR streaming.StreamJob: Error Launching job : Call From master/10.142.0.2 to master:54310 failed on connection exception: java.net.ConnectException: Connection refused; For more details see:  http://wiki.apache.org/hadoop/ConnectionRefused
+Streaming Command Failed!
+get: Call From master/10.142.0.2 to master:54310 failed on connection exception: java.net.ConnectException: Connection refused; For more details see:  http://wiki.apache.org/hadoop/ConnectionRefused
+rm: Call From master/10.142.0.2 to master:54310 failed on connection exception: java.net.ConnectException: Connection refused; For more details see:  http://wiki.apache.org/hadoop/ConnectionRefused
+Stopping namenodes on [master]
+master: no namenode to stop
+slave2: stopping datanode
+master: stopping datanode
+slave3: stopping datanode
+slave: stopping datanode
+Stopping secondary namenodes [0.0.0.0]
+0.0.0.0: stopping secondarynamenode
+stopping yarn daemons
+stopping resourcemanager
+slave: stopping nodemanager
+slave: nodemanager did not stop gracefully after 5 seconds: killing with kill -9
+master: stopping nodemanager
+master: nodemanager did not stop gracefully after 5 seconds: killing with kill -9
+slave3: stopping nodemanager
+slave3: nodemanager did not stop gracefully after 5 seconds: killing with kill -9
+slave2: stopping nodemanager
+slave2: nodemanager did not stop gracefully after 5 seconds: killing with kill -9
+no proxyserver to stop
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
+ERROR, url not found
