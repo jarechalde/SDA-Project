@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 import math
+from matplotlib import colors
 
 #Number of bins for our plot
 
@@ -70,9 +71,14 @@ plt.title("TONE")
 
 ###Second Plot###
 
+#Heatmap for the second plot
+cmap = colors.ListedColormap(['#ffcccc','#ff8080','#ff3333','#cc0000','#4d0000'])
+bounds=[1, 10, 100, 1000, 1000]
+norm = colors.BoundaryNorm(bounds, cmap.N)
+
 #Adding hexbin for number times that location was referenced in the news
 ax = fig.add_subplot(212)
-map.hexbin(x,y, C = d, cmap = 'inferno')
+map.hexbin(x,y, C = d, cmap = cmap, norm = norm)
 
 #Adding color bar at the bottom
 colbar2 = map.colorbar(location= 'right')
