@@ -294,14 +294,23 @@ First our script will start Hadoop File System and the Resource manager that wil
 After HDFS and the resource manager are ready, our script will continue by downloading all the files that we specify, this can be done by filtering by month,day and/or year the different files that are listed in the _masterfiles.txt_ file. Our script will take care of downloading in the master node every file, unzip it, get rid of the data that we don't need from this file to save space, transfer it to HDFS and delete it from the local file system on the master node.
 
 ## 3. Running the MapReduce job
-Once all the files specified are downladed, the script will procede to run the MapReduce job on all our slave nodes, remember that our master node is also a slave node in this project. This will be done by submitting one command from the script that will indicate which will be the Mapper and Reducer scripts used for this job, and the list of files that will be implied in this job and the outpuit folder.
+Once all the files specified are downladed, the script will procede to run the MapReduce job on all our slave nodes, remember that our master node is also a slave node in this project. This will be done by submitting one command from the script that will indicate which will be the Mapper and Reducer scripts used for this job, and the list of files that will be implied in this job and the output folder.
 
 ## 4. Stopping HDFS and the Resource Manager
 Whenever the MapReduce job is done, and the results are retrieved from HDFS to the local machine, the script will take care of stopping HDFS and the Resource Manager.
 
 # Results
+After running the MapReduce job, we will obtain a file that will look like this.
 
-To show our results, the Python script developed will use Matplotlib's Basemap Toolkit as we mentioned at the beginning of this document. It will also use Numpy to manipulate our data. So the first step of this last part will be to install all the modules that we will need for this script to run.
+```
+[lat0] [lon0] [Tone] [Count]
+[lat1] [lon1] [Tone] [Count]
+[lat2] [lon2] [Tone] [Count]
+...
+[latN] [lonN] [Tone] [Count]
+```
+
+To show our results, the Python script developed (_HeatMap.py_) will use Matplotlib's Basemap Toolkit as we mentioned at the beginning of this document. It will also use Numpy to manipulate our data. So the first step of this last part will be to install all the modules that we will need for this script to run.
 ```
 [1] sudo apt-get install python-matplotlib
 [2] sudo apt-get install python-mpltoolkits.basemap
