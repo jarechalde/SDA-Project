@@ -279,8 +279,8 @@ Our MapReduce process will be running a custom Mapper and Reduced that we implem
 
 Then we need to make sure that the scripts can be executed by the nodes, so we need to go into _SDA_Project_ folder that will appear after we clone this repository, and run the following commands on all our nodes.
 ```
-chmod +x MapHadoop.py
-chmod +x ReducerHadoop.py
+[1] chmod +x MapHadoop.py
+[2] chmod +x ReducerHadoop.py
 ```
 
 # Results
