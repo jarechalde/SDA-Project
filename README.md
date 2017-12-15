@@ -13,11 +13,13 @@ More information about how this data is stored is available [here](http://data.g
 
 First we will start by setting up the hadoop cluster, for this project we will create 4 instances, and configure them as it follows.
 
-We will create on Google Cloud Platform 4 instances that will serve as master and slave nodes for our project. We created 4 instances each one of them having 1 vCore and 4 GB of RAM, and 500GB of disk each one, due to the limitation of 2TB inside a project. Ths instances will be running Ubuntu 16.04 LTS
+We created on Google Cloud Platform 4 instances that will serve as master and slave nodes for our project. Each one of them has 1 vCore and 4 GB of RAM, and 500GB of disk each one, due to the limitation of 2TB inside a project on Google Cloud Platform policies. Ths instances will be running Ubuntu 16.04 LTS.
+
+The proccess of setting up the cluster is listed below, in case some step should be executed on all the instances it will be indicated by *ALL*, in case it only needs to be executed on the master node, it will be indicated by *Master*.
 
 ## 1. Installing java [ALL]
 
-First we will need to install java.
+First we need to install java.
 
 ```
 [1] sudo apt-get update
@@ -42,7 +44,7 @@ Our main script will be using unzip to unzip all the incoming files, so we will 
 
 ## 3. Creating Hadoop users [ALL]
 
-Then we continue by adding a user for Hadoop in the users group, and giving this user superuser permissions, this should be done in all instances too. You can choose any password you like, it won’t affect any part of this process.
+Then we continue by adding a user for Hadoop in the users group, and giving this user superuser permissions. You can choose any password you like, it won’t affect any part of this process.
 
 ```
 [1] sudo addgroup hadoop
@@ -58,7 +60,7 @@ Then we should login into the created username in all the instances.
 
 ## 4. Giving access to the slave nodes to the master node [MASTER]
 
-The master node should be able to access all the other nodes in the cluster without a ssh key, to run the map-reduce job, so we need to create a public key by running the first command. After running the second command, we will get the key string. The way Google instances get the ssh keys is different than in any other service. Google instances get the ssh key values from Google Cloud Platform whenever they are started, so we will need to copy the key string obtained by executing the second command to Metadata > SSH Keys on the Google Cloud Platform Computer Engine menu. Then when we connect to any of the instances, Google Cloud Platform will pass this keys to the instance and add it to the authorized keys list. If this setup was done in another service, the key value should be added manually to the authorized keys list in the other instances manually.
+The master node should be able to access all the other nodes in the cluster without a ssh key, to run the map-reduce job, so we need to create a public key by running the first command. After running the second command, we will get the key string. The way Google instances get the ssh keys is different than in any other service. Google instances get the ssh key values from Google Cloud Platform whenever they are started, so we will need to copy the key string obtained by executing the second command to _Metadata > SSH Keys_ on the Google Cloud Platform Computer Engine menu. Then when we connect to any of the instances, Google Cloud Platform will pass this keys to the instance and add it to the authorized keys list. If this setup was done in another service, the key value should be added manually to the authorized keys list in the other instances manually.
 
 ```
 [1] ssh-keygen -t rsa -P ""
@@ -244,7 +246,7 @@ These commands will start the Hadoop File System, and the resource manager. Once
 jps
 ```
 
-In the master node we should get something like this/
+In the master node we should get something like this.
 ```
 [process num] SecondaryNameNode
 [process num] NameNode
