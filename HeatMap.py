@@ -72,4 +72,3 @@ plt.title("Number of references in the News")
 
 #Showing the plot
 plt.show()
-plt.savefig("Mymap.jpg")
