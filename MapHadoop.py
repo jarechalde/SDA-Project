@@ -14,13 +14,17 @@ for line in sys.stdin:
 
  #Initializing the list that will contain lat,long, and emotion
  listlatlongem = []
-
- #Locations
- loc = line[1]
+  
+ try:
+  #Locations
+  loc = line[1]
  
- #Emotions for this locations
- emot = line[2]
+  #Emotions for this locations
+  emot = line[2]
 
+ except:
+  logging.info("Input error")
+  continue
 
  #If there are no locations in this row, we are not interested into this row, so we skip it:
  if loc==None:
@@ -34,7 +38,12 @@ for line in sys.stdin:
  #We get the emotion for this locations
  #Emotions are separated by a simple comma
  emotions = emot.split(",")
- emotion = emotions[0]
+
+ try:
+  emotion = emotions[0]
+ except:
+  continue
+  logging.info("No emotions data")
 
  #Now for every location in locations we will save it
  #Locatioon 0 was empty for some reason so we start in 1 instead
@@ -43,8 +52,11 @@ for line in sys.stdin:
 
   #Locations are divided by #, and the latitude and longitude are in the 5th and 6th position respectivelu
   locatt = location.split("#")
-  lat = locatt[5]
-  long = locatt[6]
+  try:
+   lat = locatt[5]
+   long = locatt[6]
+  except:
+   logging.info("No location data")
 
   #If we cannot convert the float due to a erroneous lat or long we skip this iteration
   try:

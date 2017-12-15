@@ -118,6 +118,14 @@ def getfiles(filtery,filterm,filterd):
   mydatar = open(addressdatar, 'a')
   for line in mydatal:
    data = line.split('\t')
+   #If there is missing location or emotion data, we skip that row
+   try:
+    loc = data[10]
+    emot = data[15]
+   except:
+    print("Missing Data")
+    continue
+   
    mydatar.write('{}\t{}'.format(data[10],data[15]))
   
   #Closing the files
@@ -144,11 +152,10 @@ def mapreducejob():
  command += "-mapper /home/hduser/Work/SDA-Project/MapHadoop.py "
  command += "-file /home/hduser/Work/SDA-Project/ReducerHadoop.py "
  command += "-reducer /home/hduser/Work/SDA-Project/ReducerHadoop.py " 
- command += "-input /home/hduser/Files/2016/01/01/* "  
+ #command += "-input /home/hduser/Files/2016/01/01/* "  
 
- #Skipping this for now 
- for i in range(1,30): 
-  continue 
+ for i in range(1,30):  
+  #continue
   j = str(i)   
  
   if i<10:
@@ -186,7 +193,7 @@ def closecluster():
 
 startcluster()
 #removefiles()
-#getfiles(1,1,1)
+#getfiles(1,1,0)
 mapreducejob()
 #cleanfiles()
 closecluster()
