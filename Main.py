@@ -152,10 +152,10 @@ def mapreducejob():
  command += "-mapper /home/hduser/Work/SDA-Project/MapHadoop.py "
  command += "-file /home/hduser/Work/SDA-Project/ReducerHadoop.py "
  command += "-reducer /home/hduser/Work/SDA-Project/ReducerHadoop.py " 
- #command += "-input /home/hduser/Files/2016/01/01/* "  
+ command += "-input /home/hduser/Files/2016/01/02/* "  
 
  for i in range(1,31):  
-  #continue
+  continue
   j = str(i)   
  
   if i<10:
@@ -185,6 +185,6 @@ def closecluster():
 
 startcluster()
 #removefiles()
-getfiles(1,1,0)
-#mapreducejob()
+#getfiles(1,1,0)
+mapreducejob()
 closecluster()
